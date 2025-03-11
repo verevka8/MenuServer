@@ -41,16 +41,13 @@ jobs:
           name: app-jar
 
       - name: Build the Docker image
-        run: docker build . -t employee_crud:latest
+        run: docker build . -t  ${{ secrets.LOGIN_DOCKER_HUB }}menu_server:latest
 
       - name:  Login in DockerHub
         uses:  docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
           username: ${{ secrets.LOGIN_DOCKER_HUB }}
           password: ${{ secrets.PSW_DOCKER_HUB}}
-
-      - name: Tag Docker image
-        run: docker tag employee_crud:latest ${{ secrets.LOGIN_DOCKER_HUB }}/employee_crud:latest
 
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.LOGIN_DOCKER_HUB }}/employee_crud:latest
