@@ -2,52 +2,28 @@ package org.example.menuserver.sessions;
 
 import org.example.menuserver.websocket.entity.Order;
 import org.example.menuserver.websocket.entity.SessionOrders;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.io.Serializable;
 
-public class Session implements Runnable {
+
+public class Session {
     private String sessionId;
-    private final BlockingQueue<Order> messageQueue;
-    private final SimpMessagingTemplate messagingTemplate;
-    private SessionOrders sessionOrders;
+    private SessionOrders orders;
 
-    public Session(String sessionId,SimpMessagingTemplate messagingTemplate) {
-        this.messageQueue = new LinkedBlockingQueue<>();
+    public Session(String sessionId) {
         this.sessionId = sessionId;
-        this.messagingTemplate = messagingTemplate;
-        sessionOrders = new SessionOrders();
+        this.orders = new SessionOrders();
     }
 
-    @Override
-    public void run() {
-
-        while(true){
-            try {
-                Order order = messageQueue.take();
-                sessionOrders.addOrder(order);
-                System.out.println("В сессии: " +  sessionId + " получено новое сообщение: " + order);
-                sendMessage(order);
-                System.out.println("Сообщение всем отправлено");
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public void receiveMessage(Order order) {
+        orders.addOrder(order);
     }
 
-    public void receiveMessage(Order message) {
-        messageQueue.offer(message);
+    public SessionOrders getOrders(){
+        return orders;
     }
 
-    public SessionOrders GetAllOrders(){
-        return sessionOrders; //TODO: сделать копию
-    }
-
-    private void sendMessage(Order message){
-        messagingTemplate.convertAndSend("/topic/session/" + sessionId,message);
+    public String getSessionId() {
+        return sessionId;
     }
 }

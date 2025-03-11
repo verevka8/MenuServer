@@ -1,17 +1,20 @@
 package org.example.menuserver.websocket.entity;
 
-import org.springframework.web.bind.annotation.PathVariable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class SessionOrders {
 
-    private Map<String, List<Order>> allOrders = new HashMap<>();
+    private Map<String, List<Order>> allOrders;
 
-    public SessionOrders() {}
+    public SessionOrders() {
+        allOrders = new HashMap<>();
+    }
 
     public void addOrder(Order newOrder){
         if(allOrders.containsKey(newOrder.getUser())){
@@ -24,11 +27,8 @@ public class SessionOrders {
             });
         }
     }
+
     public Map<String, List<Order>> getAllOrders() {
         return allOrders;
-    }
-
-    public void setAllOrders(Map<String, List<Order>> allOrders) {
-        this.allOrders = allOrders;
     }
 }

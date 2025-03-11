@@ -13,6 +13,6 @@ public class MenuServerApplication {
 
         ApplicationContext context = SpringApplication.run(MenuServerApplication.class, args);
         SessionsController controller = context.getBean(SessionsController.class);
-        controller.createNewSession("1234");
+        controller.createNewSession("1234",true);
     }
 }
