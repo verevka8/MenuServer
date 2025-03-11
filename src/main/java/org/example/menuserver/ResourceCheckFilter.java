@@ -24,7 +24,7 @@ public class ResourceCheckFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         if (!resourcesAvailable()) {
-            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Not enough resources");
+            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Нет нужных ресурсов");
             return;
         }
         chain.doFilter(request, response);
@@ -36,7 +36,7 @@ public class ResourceCheckFilter implements Filter {
 
         System.out.println("Free physical memory: " + freePhysicalMemory);
         System.out.println("System CPU load: " + cpuLoad);
-        boolean memoryOk = freePhysicalMemory > 100L * 1024 * 1024; // 100 МБ
+        boolean memoryOk = freePhysicalMemory > 100L * 1024 * 1024;
         boolean cpuOk = cpuLoad >= 0.0 && cpuLoad < 0.8;
         return memoryOk && cpuOk;
     }

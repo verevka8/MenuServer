@@ -1,9 +1,9 @@
 package org.example.menuserver.redis;
 
 
-import org.example.menuserver.sessions.Session;
 import org.example.menuserver.websocket.entity.OrderMessage;
 import org.example.menuserver.websocket.entity.SessionCreateMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -20,12 +20,21 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
 
+    @Value("${redis.host.name}")
+    private String redisHost;
+
+    @Value("${redis.host.port}")
+    private int redisHostPort;
+
+    @Value("${redis.psw}")
+    private String clientPsw;
+
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
-        config.setHostName("redis");
-        config.setPort(6379);
-        config.setPassword("1234");
+        config.setHostName(redisHost);
+        config.setPort(redisHostPort);
+        config.setPassword(clientPsw);
         return new LettuceConnectionFactory(config);
     }
 

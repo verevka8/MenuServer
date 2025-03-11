@@ -1,25 +1,42 @@
-version: '3'
+version: '3.7'
 
 services:
+  traefik:
+    image: traefik_menu_app:latest
+    command:
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.filename=/etc/traefik/traefik_dynamic.yml
+      - --entrypoints.web.address=:80
+      - --api.insecure=true
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - app1
+#      - app2
+
   app1:
     image: menu_server:latest
-    ports:
-      - "8080:8080"
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-  app2:
-    image: menu_server:latest
-    ports:
-      - "8081:8080"
+    labels:
+      - "traefik.enable=false"
     depends_on:
       rabbitmq:
         condition: service_healthy
       redis:
         condition: service_healthy
 
+  app2:
+    image: menu_server:latest
+    labels:
+      - "traefik.enable=false"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -27,13 +44,14 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
     ports:
-      - "15672:15672"    # Порт для RabbitMQ Management UI
+      - "15672:15672"
+      - "61613:61613"
     command: >
       bash -c "rabbitmq-plugins enable --offline rabbitmq_stomp &&
                rabbitmq-plugins enable --offline rabbitmq_web_stomp &&
                rabbitmq-server"
     healthcheck:
-      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -44,10 +62,13 @@ services:
     volumes:
       - redis_data:/data
     command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 3
+
 volumes:
   redis_data:
