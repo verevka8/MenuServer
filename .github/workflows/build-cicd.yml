@@ -41,7 +41,7 @@ jobs:
           name: app-jar
 
       - name: Build the Docker image
-        run: docker build . -t  ${{ secrets.LOGIN_DOCKER_HUB }}menu_server:latest
+        run: docker build . -t  ${{ secrets.LOGIN_DOCKER_HUB }}/menu_server:latest
 
       - name:  Login in DockerHub
         uses:  docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
@@ -50,7 +50,7 @@ jobs:
           password: ${{ secrets.PSW_DOCKER_HUB}}
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.LOGIN_DOCKER_HUB }}/employee_crud:latest
+        run: docker push ${{ secrets.LOGIN_DOCKER_HUB }}/menu_server:latest
 
       - name: Build Successful
         run: echo "Сборка и публикация Docker образа прошла успешно!"
