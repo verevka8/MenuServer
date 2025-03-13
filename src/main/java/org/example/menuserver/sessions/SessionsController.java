@@ -32,12 +32,11 @@ public class SessionsController {
         }
 
     }
-
     public void receivingMessages(String sessionId, Order order, boolean flag){
         sessionMap.get(sessionId).receiveMessage(order);
         if (flag){
             publisher.publish(new OrderMessage(sessionId,order));
-            System.out.println("Выложилось");
+            System.out.println("Выложил событие о появление сообщения");
             sendMessage(sessionId,order);
         }
     }
@@ -52,5 +51,4 @@ public class SessionsController {
     private void sendMessage(String sessionId, Order order){
         messagingTemplate.convertAndSend("/topic/session." + sessionId,order);
     }
-
 }

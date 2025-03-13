@@ -72,9 +72,4 @@ public class RedisConfig {
         container.addMessageListener(sessionListenerAdapter,new ChannelTopic("sessionChannel"));
         return container;
     }
-
-    @Bean
-    public ChannelTopic topic() {
-        return new ChannelTopic("test");
-    }
 }

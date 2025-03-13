@@ -6,7 +6,7 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
     ports:
-      - "5672:5672"      # AMQP порт для обычных соединений
+      - "5672:5672"      # Порт для обычных соединений
       - "15672:15672"    # Порт для RabbitMQ Management UI
       - "61613:61613"    # Порт для STOMP
     command: >

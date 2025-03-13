@@ -1,4 +1,4 @@
-package org.example.menuserver;
+package org.example.menuserver.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;

@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   traefik:
-    image: traefik_menu_app:latest
+    image: verevka/traefik_menu_app:latest
     command:
       - --providers.docker
       - --providers.docker.exposedbydefault=false
@@ -16,10 +16,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - app1
-#      - app2
+      - app2
 
   app1:
-    image: menu_server:latest
+    image: verevka/menu_app:latest
     labels:
       - "traefik.enable=false"
     depends_on:
@@ -29,7 +29,7 @@ services:
         condition: service_healthy
 
   app2:
-    image: menu_server:latest
+    image: verevka/menu_app:latest
     labels:
       - "traefik.enable=false"
     depends_on:
@@ -39,7 +39,7 @@ services:
         condition: service_healthy
 
   rabbitmq:
-    image: rabbitmq:3-management
+    image: verevka/rabbimq_menu_app:latest
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -57,7 +57,7 @@ services:
       retries: 5
 
   redis:
-    image: redis_menu_app:latest
+    image: verevka/redis_menu_app:latest
     container_name: redis
     volumes:
       - redis_data:/data
