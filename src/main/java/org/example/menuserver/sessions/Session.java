@@ -3,12 +3,10 @@ package org.example.menuserver.sessions;
 import org.example.menuserver.websocket.entity.Order;
 import org.example.menuserver.websocket.entity.SessionOrders;
 
-import java.io.Serializable;
-
 
 public class Session {
-    private String sessionId;
-    private SessionOrders orders;
+    private final String sessionId;
+    private final SessionOrders orders;
 
     public Session(String sessionId) {
         this.sessionId = sessionId;

@@ -1,7 +1,6 @@
 package org.example.menuserver.rest.entity;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Dish {
 
