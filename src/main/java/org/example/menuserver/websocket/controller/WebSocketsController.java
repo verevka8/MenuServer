@@ -31,8 +31,9 @@ public class WebSocketsController {
         }
 
         String sessionId = Objects.requireNonNull(nativeHeaders.get("sessionId")).get(0).toString();
-        Order food = message.getPayload();
-        food.setUser(Objects.requireNonNull(message.getHeaders().get("simpSessionId")).toString());
-        sessionController.receivingMessages(sessionId, food, true);
+        Order order = message.getPayload();
+        String username = Objects.requireNonNull(Objects.requireNonNull(nativeHeaders.get("username")).get(0)).toString();
+        order.setUser(username);
+        sessionController.receivingMessages(sessionId, order, true);
     }
 }
