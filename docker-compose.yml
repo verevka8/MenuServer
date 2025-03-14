@@ -19,7 +19,7 @@ services:
       - app2
 
   app1:
-    image: verevka/menu_app:latest
+    image: verevka/menu_server:latest
     labels:
       - "traefik.enable=false"
     depends_on:
@@ -29,7 +29,7 @@ services:
         condition: service_healthy
 
   app2:
-    image: verevka/menu_app:latest
+    image: verevka/menu_server:latest
     labels:
       - "traefik.enable=false"
     depends_on:
@@ -39,7 +39,7 @@ services:
         condition: service_healthy
 
   rabbitmq:
-    image: verevka/rabbimq_menu_app:latest
+    image: rabbitmq:3-management
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
